@@ -65,11 +65,21 @@ number_string = """73167176531330624919225119674426574742355349194934
 # removing newline \n character from above string
 number_string = number_string.replace("\n", "")
 
-max_product = 0
-for i in range(len(number_string) - 13):
-    sub_str = number_string[i:(i + 13)]
-    current_product = adjacent_product(sub_str)
-    if current_product > max_product:
-        max_product = current_product
-
+# using sliding window technique
+head = 13
+tail = 0
+# initial product of first 13 numbers
+product = adjacent_product(number_string[tail:head])
+max_product = product
+while head < len(number_string):
+    product = product * int(number_string[head])
+    try:
+        product = product // int(number_string[tail])
+    except:
+        # in case if tail number is 0
+        product = adjacent_product(number_string[(tail + 1):(head + 1)])
+    if product > max_product:
+        max_product = product
+    head += 1
+    tail += 1
 print(max_product)
